@@ -330,7 +330,7 @@ select {
   align-items: center;
   justify-content: center;
   gap: 6px;
-  padding: 6px 16px;
+  padding: 10px 16px;
   border: 1px solid #e2e8f0;
   border-radius: 20px;
   background: #ffffff;
@@ -384,12 +384,18 @@ select {
 
 .podium-column-1 {
   height: 176px;
-  background: linear-gradient(180deg, #fef3c7 0%, #fde68a 100%);
+  background: linear-gradient(180deg,#fef3c7,#fde68a);
+  border-top: 2px solid #fde047;
+}
+
+.podium-column-number-1 {
+  color: rgba(234,179,8,.2);
 }
 
 .podium-column-2,
 .podium-column-3 {
   background: linear-gradient(180deg, #e2e8f0 0%, #cbd5e1 100%);
+  border-top: 2px solid #cbd5e1;
 }
 
 .podium-column-2 {
@@ -902,7 +908,7 @@ select {
 
 @media (max-width: 560px) {
   .leaderboard-card {
-    padding: 0 0 24px;
+    padding: 8px 8px 24px;
   }
 
   .section-copy h2 {
