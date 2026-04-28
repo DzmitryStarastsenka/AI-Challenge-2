@@ -517,13 +517,13 @@ select {
 }
 
 .expand-icon {
-  width: 42px;
-  height: 42px;
+  width: 50px;
+  height: 50px;
   border-radius: 999px;
   display: grid;
   place-items: center;
-  background: #f1f4f8;
-  color: #7b8594;
+  background: #edf8fb;
+  color: #29a4ea;
   transition: transform 180ms ease;
 }
 
@@ -533,8 +533,8 @@ select {
 }
 
 .expand-icon svg {
-  width: 16px;
-  height: 16px;
+  width: 20px;
+  height: 20px;
 }
 
 .ranking-item[data-expanded="true"] .expand-icon {
