@@ -8,15 +8,6 @@ const podiumElement = document.querySelector("#podium");
 const rankingListElement = document.querySelector("#rankingList");
 const emptyStateElement = document.querySelector("#emptyState");
 
-const baseRankings = employees
-  .map((employee) => ({
-    id: employee.id,
-    totalPoints: employee.activities.reduce((sum, activity) => sum + activity.points, 0),
-  }))
-  .sort((left, right) => right.totalPoints - left.totalPoints || left.id.localeCompare(right.id));
-
-const baseRankById = new Map(baseRankings.map((entry, index) => [entry.id, index + 1]));
-
 const appState = {
   selectedYear: filterOptions.years[0],
   selectedQuarter: filterOptions.quarters[0],
@@ -71,7 +62,11 @@ function render() {
   const employeesForFilters = employees
     .map((employee) => buildEmployeeView(employee))
     .filter((employee) => employee.filteredActivities.length > 0)
-    .sort((left, right) => left.baseRank - right.baseRank);
+    .sort((left, right) => right.totalPoints - left.totalPoints || left.name.localeCompare(right.name))
+    .map((employee, index) => ({
+      ...employee,
+      rank: index + 1,
+    }));
 
   const rankedEmployees = employeesForFilters.filter((employee) => {
       const haystack = `${employee.name} ${employee.title} ${employee.code}`.toLowerCase();
@@ -116,7 +111,6 @@ function buildEmployeeView(employee) {
 
   return {
     ...employee,
-    baseRank: baseRankById.get(employee.id) ?? Number.MAX_SAFE_INTEGER,
     filteredActivities: filteredActivities.sort((left, right) => new Date(right.date) - new Date(left.date)),
     categoryCounts,
     totalPoints,
@@ -137,7 +131,7 @@ function renderPodium(topThree) {
     .filter((entry) => Boolean(entry.employee))
     .map(({ employee, slotRank }) => {
       const visualRank = slotRank;
-      const actualRank = employee.baseRank;
+      const actualRank = employee.rank;
       return `
         <article class="podium-card rank-${visualRank}">
           <div class="podium-person">
@@ -184,7 +178,7 @@ function renderRankingList(rankedEmployees) {
         <article class="ranking-item" data-expanded="${isExpanded}">
           <button class="ranking-summary" type="button" data-employee-id="${employee.id}" aria-expanded="${isExpanded}">
             <div class="ranking-person">
-              <div class="rank-number">${employee.baseRank}</div>
+              <div class="rank-number">${employee.rank}</div>
               <div class="mini-avatar" style="--avatar-color: ${employee.avatarColor}">${getInitials(employee.name)}</div>
               <div class="person-copy">
                 <h3>${escapeHtml(employee.name)}</h3>
