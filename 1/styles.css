@@ -235,6 +235,10 @@ select {
   background: var(--bronze);
 }
 
+.rank-search .podium-rank-badge {
+  background: #9ca3af;
+}
+
 .avatar-ring {
   width: 112px;
   height: 112px;
@@ -254,6 +258,12 @@ select {
 
 .rank-3 .avatar-ring {
   background: linear-gradient(145deg, #d69157, #9f5118);
+}
+
+.rank-search .avatar-ring {
+  width: 84px;
+  height: 84px;
+  background: linear-gradient(145deg, #d7dee8, #b4becd);
 }
 
 .avatar {
@@ -356,6 +366,11 @@ select {
 
 .podium-column-3 {
   height: 112px;
+}
+
+.podium-column-search {
+  height: 112px;
+  background: linear-gradient(180deg, #d9e2ef 0%, #c8d2e2 100%);
 }
 
 .podium-column-number {

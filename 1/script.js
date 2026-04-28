@@ -130,7 +130,7 @@ function renderPodium(topThree) {
   const podiumOrder = orderModel
     .filter((entry) => Boolean(entry.employee))
     .map(({ employee, slotRank }) => {
-      const visualRank = slotRank;
+      const visualRank = topThree.length === 3 ? slotRank : employee.rank <= 3 ? employee.rank : "search";
       const actualRank = employee.rank;
       return `
         <article class="podium-card rank-${visualRank}">
