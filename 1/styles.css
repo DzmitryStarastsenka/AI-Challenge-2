@@ -61,11 +61,11 @@ select {
 
 .content-wrap {
   width: min(1120px, calc(100% - 32px));
-  margin: 22px auto 80px;
+  margin: 18px auto 80px;
 }
 
 .page-title {
-  margin: 0 0 18px;
+  margin: 0 0 10px;
   font-size: clamp(38px, 4.4vw, 56px);
   line-height: 1.1;
   font-weight: 700;
@@ -73,7 +73,26 @@ select {
 }
 
 .leaderboard-card {
-  padding: 0 0 30px;
+  background: #f7f7f8;
+  border-radius: 14px;
+  padding: 16px 16px 30px;
+}
+
+.section-copy {
+  margin: 0 0 14px;
+}
+
+.section-copy h2 {
+  margin: 0;
+  font-size: 48px;
+  line-height: 1.08;
+  color: #0f172a;
+}
+
+.section-copy p {
+  margin: 10px 0 0;
+  color: #6b7280;
+  font-size: 22px;
 }
 
 .filters-card {
@@ -162,7 +181,7 @@ select {
   z-index: 2;
   flex-direction: column;
   gap: 0;
-  margin-bottom: -10px;
+  margin-bottom: -18px;
 }
 
 .avatar-wrap {
@@ -262,7 +281,7 @@ select {
 }
 
 .score-pill {
-  margin: 10px auto 0;
+  margin: 6px auto 0;
   min-width: 98px;
   width: fit-content;
   display: inline-flex;
@@ -351,9 +370,13 @@ select {
 .ranking-item {
   border-radius: 18px;
   background: #fff;
-  border: 1px solid #9ee2f0;
+  border: 1px solid #e5e7eb;
   box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
   overflow: hidden;
+}
+
+.ranking-item[data-expanded="true"] {
+  border-color: #91def2;
 }
 
 .ranking-summary {
@@ -474,15 +497,24 @@ select {
   font-weight: 700;
 }
 
+.total-score .total-star {
+  background: #29a4ea;
+}
+
 .expand-icon {
   width: 42px;
   height: 42px;
   border-radius: 999px;
   display: grid;
   place-items: center;
-  background: #edf8fb;
-  color: #2ea6e3;
+  background: #f1f4f8;
+  color: #7b8594;
   transition: transform 180ms ease;
+}
+
+.ranking-item[data-expanded="true"] .expand-icon {
+  background: #edf8fb;
+  color: #29a4ea;
 }
 
 .expand-icon svg {
@@ -545,7 +577,19 @@ select {
 
 .points-positive {
   font-weight: 700;
-  color: #0f172a;
+  color: #29a4ea;
+}
+
+.category-badge {
+  display: inline-flex;
+  align-items: center;
+  height: 24px;
+  padding: 0 10px;
+  border-radius: 999px;
+  background: #eef2f6;
+  color: #4b5563;
+  font-size: 13px;
+  font-weight: 600;
 }
 
 .empty-state {
@@ -613,6 +657,14 @@ select {
 @media (max-width: 560px) {
   .leaderboard-card {
     padding: 0 0 24px;
+  }
+
+  .section-copy h2 {
+    font-size: 34px;
+  }
+
+  .section-copy p {
+    font-size: 18px;
   }
 
   .filters-card {

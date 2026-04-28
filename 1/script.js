@@ -13,7 +13,7 @@ const appState = {
   selectedQuarter: filterOptions.quarters[0],
   selectedCategory: filterOptions.categories[0],
   searchTerm: "",
-  expandedEmployeeId: employees[0]?.id ?? null,
+  expandedEmployeeIds: new Set(),
 };
 
 const iconPaths = {
@@ -68,9 +68,10 @@ function render() {
     })
     .sort((left, right) => right.totalPoints - left.totalPoints || left.name.localeCompare(right.name));
 
-  if (!rankedEmployees.some((employee) => employee.id === appState.expandedEmployeeId)) {
-    appState.expandedEmployeeId = rankedEmployees[0]?.id ?? null;
-  }
+  const visibleIds = new Set(rankedEmployees.map((employee) => employee.id));
+  appState.expandedEmployeeIds = new Set(
+    [...appState.expandedEmployeeIds].filter((employeeId) => visibleIds.has(employeeId)),
+  );
 
   renderPodium(rankedEmployees.slice(0, 3));
   renderRankingList(rankedEmployees);
@@ -145,7 +146,7 @@ function renderPodium(topThree) {
 function renderRankingList(rankedEmployees) {
   rankingListElement.innerHTML = rankedEmployees
     .map((employee, index) => {
-      const isExpanded = employee.id === appState.expandedEmployeeId;
+      const isExpanded = appState.expandedEmployeeIds.has(employee.id);
       const statBadges = Object.entries(employee.categoryCounts)
         .map(
           ([category, count]) => `
@@ -172,7 +173,7 @@ function renderRankingList(rankedEmployees) {
               <div class="ranking-stats">${statBadges}</div>
               <div class="total-block">
                 <span class="total-label">TOTAL</span>
-                <span class="total-score"><span class="star-icon"></span>${employee.totalPoints}</span>
+                <span class="total-score"><span class="star-icon total-star"></span>${employee.totalPoints}</span>
               </div>
               <span class="expand-icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24"><path d="M6.7 9.3 12 14.6l5.3-5.3 1.4 1.4-6.7 6.7-6.7-6.7z"/></svg>
@@ -187,7 +188,12 @@ function renderRankingList(rankedEmployees) {
 
   rankingListElement.querySelectorAll(".ranking-summary").forEach((button) => {
     button.addEventListener("click", () => {
-      appState.expandedEmployeeId = button.dataset.employeeId;
+      const employeeId = button.dataset.employeeId;
+      if (appState.expandedEmployeeIds.has(employeeId)) {
+        appState.expandedEmployeeIds.delete(employeeId);
+      } else {
+        appState.expandedEmployeeIds.add(employeeId);
+      }
       render();
     });
   });
@@ -199,7 +205,7 @@ function renderDetails(employee) {
       (activity) => `
         <tr>
           <td>${escapeHtml(activity.activity)}</td>
-          <td>${escapeHtml(activity.category)}</td>
+          <td><span class="category-badge">${escapeHtml(activity.category)}</span></td>
           <td>${formatDate(activity.date)}</td>
           <td class="points-positive">+${activity.points}</td>
         </tr>
