@@ -6,13 +6,14 @@ I recreated the leaderboard as a static client-side web application inside the `
 
 To match the source page, I first inspected the authenticated SharePoint leaderboard in the browser and reproduced the key UI and interaction model:
 
-- SharePoint-like top navigation and site header
-- page title and breadcrumb trail
+- page title and leaderboard intro block
 - leaderboard heading and subtitle
 - three filters: year, quarter, category
 - employee search field
 - top-3 podium layout
 - ranked expandable list with recent activity tables
+- stable ranking behavior (search does not renumber the leaderboard)
+- collapsed-by-default rows with independent expand/collapse
 
 ## Tools And Techniques
 
@@ -29,5 +30,6 @@ The original leaderboard contains real employee names, real photos, real titles,
 - generated avatar initials instead of photos
 - fictional titles and team codes
 - synthetic activity names that preserve leaderboard semantics without copying internal data
+- additional synthetic edge-case contributors with points in only one category (Education-only, Public-Speaking-only, University-Partnership-only)
 
 I kept the leaderboard structure and category model intact so the UI behaves like the original while avoiding personal or internal corporate data.

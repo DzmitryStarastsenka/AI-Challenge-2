@@ -111,8 +111,13 @@ select {
 .select-shell {
   position: relative;
   display: inline-flex;
-  min-width: 120px;
-  width: 120px;
+  min-width: 128px;
+  width: 128px;
+}
+
+.select-shell-wide {
+  min-width: 178px;
+  width: 178px;
 }
 
 .select-shell::after {
@@ -129,7 +134,7 @@ select {
 
 .select-shell select {
   width: 100%;
-  min-width: 120px;
+  min-width: 128px;
   height: 32px;
   padding: 0 38px 0 12px;
   border: 1px solid #2f2f2f;
@@ -673,6 +678,10 @@ select {
   }
 
   .select-shell {
+    width: 100%;
+  }
+
+  .select-shell-wide {
     width: 100%;
   }
 

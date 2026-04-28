@@ -131,7 +131,7 @@ function renderPodium(topThree) {
     }))
     .filter((entry) => Boolean(entry.employee))
     .map(({ employee, slotRank }) => {
-      const visualRank = slotRank === 1 ? 2 : slotRank === 2 ? 1 : 3;
+      const visualRank = slotRank;
       const actualRank = employee.baseRank;
       return `
         <article class="podium-card rank-${visualRank}">
