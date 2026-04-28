@@ -181,7 +181,7 @@ select {
   z-index: 2;
   flex-direction: column;
   gap: 0;
-  margin-bottom: -18px;
+  margin-bottom: 12px;
 }
 
 .avatar-wrap {
@@ -281,7 +281,7 @@ select {
 }
 
 .score-pill {
-  margin: 6px auto 0;
+  margin: 8px auto 0;
   min-width: 98px;
   width: fit-content;
   display: inline-flex;
@@ -399,13 +399,9 @@ select {
 }
 
 .rank-number {
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
-  display: grid;
-  place-items: center;
-  background: #f7f7fa;
-  color: #0f172a;
+  color: #8b93a1;
+  font-size: 24px;
+  line-height: 1;
   font-weight: 700;
 }
 
@@ -448,8 +444,7 @@ select {
   gap: 0;
   flex-wrap: nowrap;
   justify-content: flex-end;
-  padding-right: 12px;
-  border-right: 1px solid #e6e8ef;
+  padding-right: 0;
 }
 
 .stat-chip {
@@ -464,19 +459,20 @@ select {
 }
 
 .stat-chip + .stat-chip {
-  border-left: 1px solid #e6e8ef;
+  border-left: 0;
 }
 
 .stat-chip svg {
   width: 16px;
   height: 16px;
+  color: #29a4ea;
 }
 
 .total-block {
   min-width: 86px;
   text-align: right;
-  padding-right: 12px;
-  border-right: 1px solid #e6e8ef;
+  padding-right: 0;
+  border-right: 0;
 }
 
 .total-label {

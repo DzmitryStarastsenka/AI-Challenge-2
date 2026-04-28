@@ -8,6 +8,15 @@ const podiumElement = document.querySelector("#podium");
 const rankingListElement = document.querySelector("#rankingList");
 const emptyStateElement = document.querySelector("#emptyState");
 
+const baseRankings = employees
+  .map((employee) => ({
+    id: employee.id,
+    totalPoints: employee.activities.reduce((sum, activity) => sum + activity.points, 0),
+  }))
+  .sort((left, right) => right.totalPoints - left.totalPoints || left.id.localeCompare(right.id));
+
+const baseRankById = new Map(baseRankings.map((entry, index) => [entry.id, index + 1]));
+
 const appState = {
   selectedYear: filterOptions.years[0],
   selectedQuarter: filterOptions.quarters[0],
@@ -59,21 +68,22 @@ function populateSelect(selectElement, values) {
 }
 
 function render() {
-  const rankedEmployees = employees
+  const employeesForFilters = employees
     .map((employee) => buildEmployeeView(employee))
     .filter((employee) => employee.filteredActivities.length > 0)
-    .filter((employee) => {
+    .sort((left, right) => left.baseRank - right.baseRank);
+
+  const rankedEmployees = employeesForFilters.filter((employee) => {
       const haystack = `${employee.name} ${employee.title} ${employee.code}`.toLowerCase();
       return haystack.includes(appState.searchTerm);
-    })
-    .sort((left, right) => right.totalPoints - left.totalPoints || left.name.localeCompare(right.name));
+    });
 
   const visibleIds = new Set(rankedEmployees.map((employee) => employee.id));
   appState.expandedEmployeeIds = new Set(
     [...appState.expandedEmployeeIds].filter((employeeId) => visibleIds.has(employeeId)),
   );
 
-  renderPodium(rankedEmployees.slice(0, 3));
+  renderPodium(employeesForFilters.slice(0, 3));
   renderRankingList(rankedEmployees);
 
   emptyStateElement.hidden = rankedEmployees.length > 0;
@@ -106,6 +116,7 @@ function buildEmployeeView(employee) {
 
   return {
     ...employee,
+    baseRank: baseRankById.get(employee.id) ?? Number.MAX_SAFE_INTEGER,
     filteredActivities: filteredActivities.sort((left, right) => new Date(right.date) - new Date(left.date)),
     categoryCounts,
     totalPoints,
@@ -114,30 +125,35 @@ function buildEmployeeView(employee) {
 
 function renderPodium(topThree) {
   const podiumOrder = [1, 0, 2]
-    .map((index) => topThree[index])
-    .filter(Boolean)
-    .map((employee, displayIndex) => {
-      const rank = displayIndex === 0 ? 2 : displayIndex === 1 ? 1 : 3;
+    .map((index) => ({
+      employee: topThree[index],
+      slotRank: index === 0 ? 1 : index === 1 ? 2 : 3,
+    }))
+    .filter((entry) => Boolean(entry.employee))
+    .map(({ employee, slotRank }) => {
+      const visualRank = slotRank === 1 ? 2 : slotRank === 2 ? 1 : 3;
+      const actualRank = employee.baseRank;
       return `
-        <article class="podium-card rank-${rank}">
+        <article class="podium-card rank-${visualRank}">
           <div class="podium-person">
             <div class="avatar-wrap">
               <div class="avatar-ring">
                 <div class="avatar" style="--avatar-color: ${employee.avatarColor}">${getInitials(employee.name)}</div>
               </div>
-              <div class="podium-rank-badge">${rank}</div>
+              <div class="podium-rank-badge">${actualRank}</div>
             </div>
             <h3 class="podium-name">${escapeHtml(employee.name)}</h3>
             <p class="podium-title">${escapeHtml(employee.title)}</p>
             <p class="podium-code">(${escapeHtml(employee.code)})</p>
             <div class="score-pill"><span class="star-icon"></span>${employee.totalPoints}</div>
           </div>
-          <div class="podium-column podium-column-${rank}" aria-hidden="true">
-            <span class="podium-column-number podium-column-number-${rank}">${rank}</span>
+          <div class="podium-column podium-column-${visualRank}" aria-hidden="true">
+            <span class="podium-column-number podium-column-number-${visualRank}">${actualRank}</span>
           </div>
         </article>
       `;
     })
+    .filter(Boolean)
     .join("");
 
   podiumElement.innerHTML = podiumOrder;
@@ -145,7 +161,7 @@ function renderPodium(topThree) {
 
 function renderRankingList(rankedEmployees) {
   rankingListElement.innerHTML = rankedEmployees
-    .map((employee, index) => {
+    .map((employee) => {
       const isExpanded = appState.expandedEmployeeIds.has(employee.id);
       const statBadges = Object.entries(employee.categoryCounts)
         .map(
@@ -162,7 +178,7 @@ function renderRankingList(rankedEmployees) {
         <article class="ranking-item" data-expanded="${isExpanded}">
           <button class="ranking-summary" type="button" data-employee-id="${employee.id}" aria-expanded="${isExpanded}">
             <div class="ranking-person">
-              <div class="rank-number">${index + 1}</div>
+              <div class="rank-number">${employee.baseRank}</div>
               <div class="mini-avatar" style="--avatar-color: ${employee.avatarColor}">${getInitials(employee.name)}</div>
               <div class="person-copy">
                 <h3>${escapeHtml(employee.name)}</h3>

@@ -207,4 +207,40 @@ export const employees = [
       { activity: "Innovation Demo", category: "Public Speaking", date: "2025-01-30", points: 64 },
     ],
   },
+  {
+    id: "elena-pratt",
+    name: "Elena Pratt",
+    title: "Learning Specialist",
+    code: "ACADEMY.EDU.17",
+    avatarColor: "#0ea5e9",
+    activities: [
+      { activity: "Training Curriculum Update", category: "Education", date: "2025-12-06", points: 72 },
+      { activity: "Mentor Playbook Session", category: "Education", date: "2025-10-02", points: 56 },
+      { activity: "Internal Learning Sprint", category: "Education", date: "2025-07-18", points: 48 },
+    ],
+  },
+  {
+    id: "roman-ivey",
+    name: "Roman Ivey",
+    title: "Community Manager",
+    code: "COMMUNITY.SP.09",
+    avatarColor: "#3b82f6",
+    activities: [
+      { activity: "Quarterly Community Meetup", category: "Public Speaking", date: "2025-11-11", points: 64 },
+      { activity: "Engineering AMA", category: "Public Speaking", date: "2025-08-14", points: 48 },
+      { activity: "Townhall Host", category: "Public Speaking", date: "2025-05-08", points: 40 },
+    ],
+  },
+  {
+    id: "sofia-renton",
+    name: "Sofia Renton",
+    title: "University Relations Lead",
+    code: "PARTNER.UP.05",
+    avatarColor: "#14b8a6",
+    activities: [
+      { activity: "Campus Hiring Event", category: "University Partnership", date: "2025-10-29", points: 80 },
+      { activity: "Capstone Demo Panel", category: "University Partnership", date: "2025-06-20", points: 64 },
+      { activity: "University Open Day", category: "University Partnership", date: "2025-03-07", points: 40 },
+    ],
+  },
 ];
