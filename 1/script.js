@@ -119,14 +119,21 @@ function renderPodium(topThree) {
       const rank = displayIndex === 0 ? 2 : displayIndex === 1 ? 1 : 3;
       return `
         <article class="podium-card rank-${rank}">
-          <div class="avatar-ring">
-            <div class="avatar" style="--avatar-color: ${employee.avatarColor}">${getInitials(employee.name)}</div>
+          <div class="podium-person">
+            <div class="avatar-wrap">
+              <div class="avatar-ring">
+                <div class="avatar" style="--avatar-color: ${employee.avatarColor}">${getInitials(employee.name)}</div>
+              </div>
+              <div class="podium-rank-badge">${rank}</div>
+            </div>
+            <h3 class="podium-name">${escapeHtml(employee.name)}</h3>
+            <p class="podium-title">${escapeHtml(employee.title)}</p>
+            <p class="podium-code">(${escapeHtml(employee.code)})</p>
+            <div class="score-pill"><span class="star-icon"></span>${employee.totalPoints}</div>
           </div>
-          <div class="podium-rank-badge">${rank}</div>
-          <h3 class="podium-name">${escapeHtml(employee.name)}</h3>
-          <p class="podium-title">${escapeHtml(employee.title)}</p>
-          <p class="podium-code">(${escapeHtml(employee.code)})</p>
-          <div class="score-pill"><span class="star-icon"></span>${employee.totalPoints}</div>
+          <div class="podium-column podium-column-${rank}" aria-hidden="true">
+            <span class="podium-column-number podium-column-number-${rank}">${rank}</span>
+          </div>
         </article>
       `;
     })
