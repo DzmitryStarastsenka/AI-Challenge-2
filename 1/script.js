@@ -73,12 +73,19 @@ function render() {
       return haystack.includes(appState.searchTerm);
     });
 
+  const filteredPodium = employeesForFilters
+    .slice(0, 3)
+    .filter((employee) => {
+      const haystack = `${employee.name} ${employee.title} ${employee.code}`.toLowerCase();
+      return haystack.includes(appState.searchTerm);
+    });
+
   const visibleIds = new Set(rankedEmployees.map((employee) => employee.id));
   appState.expandedEmployeeIds = new Set(
     [...appState.expandedEmployeeIds].filter((employeeId) => visibleIds.has(employeeId)),
   );
 
-  renderPodium(rankedEmployees.slice(0, 3));
+  renderPodium(filteredPodium);
   renderRankingList(rankedEmployees);
 
   emptyStateElement.hidden = rankedEmployees.length > 0;
