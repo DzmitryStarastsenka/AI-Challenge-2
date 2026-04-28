@@ -33,3 +33,13 @@ The original leaderboard contains real employee names, real photos, real titles,
 - additional synthetic edge-case contributors with points in only one category (Education-only, Public-Speaking-only, University-Partnership-only)
 
 I kept the leaderboard structure and category model intact so the UI behaves like the original while avoiding personal or internal corporate data.
+
+## Final Visual Parity Pass
+
+After the initial build, I ran an additional parity pass against the source page and aligned key visual details:
+
+- podium gradients, rank-number tones, and first-place score styling
+- expand button behavior and states (default, hover, expanded)
+- ranking row hover treatment and responsive behavior at narrow widths
+- activity table typography, header casing, hover rows, and mobile column behavior
+- stat-chip typography and icon treatment using the same Fluent MDL2 glyph family used by the original page

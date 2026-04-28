@@ -16,10 +16,10 @@ const appState = {
   expandedEmployeeIds: new Set(),
 };
 
-const iconPaths = {
-  Education: "M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1zM8 7h7v2H8zm0 4h8v2H8zm0 4h5v2H8z",
-  "Public Speaking": "M12 12a4 4 0 1 0-4-4 4 4 0 0 0 4 4zm6 1h-1.26A5.94 5.94 0 0 1 12 15a5.94 5.94 0 0 1-4.74-2H6a4 4 0 0 0-4 4v2h20v-2a4 4 0 0 0-4-4z",
-  "University Partnership": "M12 3 1 9l11 6 9-4.91V17h2V9zm0 13L5.5 12.56V17L12 21l6.5-4v-4.44z",
+const categoryIcons = {
+  Education: { iconName: "Education", glyph: "" },
+  "Public Speaking": { iconName: "Presentation", glyph: "" },
+  "University Partnership": { iconName: "Emoji2", glyph: "" },
 };
 
 initialize();
@@ -175,7 +175,7 @@ function renderRankingList(rankedEmployees) {
           ([category, count]) => `
             <span class="stat-chip" data-tooltip="${escapeHtml(category)}" aria-label="${escapeHtml(category)}: ${count}">
               ${renderIcon(category)}
-              ${count}
+              <span class="stat-chip-count">${count}</span>
             </span>
           `,
         )
@@ -183,7 +183,7 @@ function renderRankingList(rankedEmployees) {
 
       return `
         <article class="ranking-item" data-expanded="${isExpanded}">
-          <button class="ranking-summary" type="button" data-employee-id="${employee.id}" aria-expanded="${isExpanded}">
+          <div class="ranking-summary">
             <div class="ranking-person">
               <div class="rank-number">${employee.rank}</div>
               <div class="mini-avatar" style="--avatar-color: ${employee.avatarColor}">${getInitials(employee.name)}</div>
@@ -198,11 +198,11 @@ function renderRankingList(rankedEmployees) {
                 <span class="total-label">TOTAL</span>
                 <span class="total-score"><span class="star-icon total-star"></span>${employee.totalPoints}</span>
               </div>
-              <span class="expand-icon" aria-hidden="true">
+              <button class="expand-icon" type="button" data-employee-id="${employee.id}" aria-expanded="${isExpanded}" aria-label="Toggle details">
                 <svg viewBox="0 0 24 24"><path d="M6.7 9.3 12 14.6l5.3-5.3 1.4 1.4-6.7 6.7-6.7-6.7z"/></svg>
-              </span>
+              </button>
             </div>
-          </button>
+          </div>
           ${isExpanded ? renderDetails(employee) : ""}
         </article>
       `;
@@ -210,6 +210,10 @@ function renderRankingList(rankedEmployees) {
     .join("");
 
   rankingListElement.querySelectorAll(".ranking-summary").forEach((button) => {
+    // no-op: click is handled by expand-icon button below
+  });
+
+  rankingListElement.querySelectorAll(".expand-icon").forEach((button) => {
     button.addEventListener("click", () => {
       const employeeId = button.dataset.employeeId;
       if (appState.expandedEmployeeIds.has(employeeId)) {
@@ -284,7 +288,9 @@ function formatDate(dateString) {
 }
 
 function renderIcon(category) {
-  return `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="${iconPaths[category]}"></path></svg>`;
+  const icon = categoryIcons[category];
+  if (!icon) return "";
+  return `<i data-icon-name="${icon.iconName}" aria-hidden="true" class="stat-chip-icon">${icon.glyph}</i>`;
 }
 
 function escapeHtml(value) {
