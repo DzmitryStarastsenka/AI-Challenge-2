@@ -83,7 +83,7 @@ function render() {
     [...appState.expandedEmployeeIds].filter((employeeId) => visibleIds.has(employeeId)),
   );
 
-  renderPodium(employeesForFilters.slice(0, 3));
+  renderPodium(rankedEmployees.slice(0, 3));
   renderRankingList(rankedEmployees);
 
   emptyStateElement.hidden = rankedEmployees.length > 0;
@@ -124,11 +124,16 @@ function buildEmployeeView(employee) {
 }
 
 function renderPodium(topThree) {
-  const podiumOrder = [1, 0, 2]
-    .map((index) => ({
-      employee: topThree[index],
-      slotRank: index === 0 ? 1 : index === 1 ? 2 : 3,
-    }))
+  const orderModel =
+    topThree.length === 3
+      ? [
+          { employee: topThree[1], slotRank: 2 },
+          { employee: topThree[0], slotRank: 1 },
+          { employee: topThree[2], slotRank: 3 },
+        ]
+      : topThree.map((employee, index) => ({ employee, slotRank: index + 1 }));
+
+  const podiumOrder = orderModel
     .filter((entry) => Boolean(entry.employee))
     .map(({ employee, slotRank }) => {
       const visualRank = slotRank;
@@ -156,6 +161,7 @@ function renderPodium(topThree) {
     .filter(Boolean)
     .join("");
 
+  podiumElement.className = `podium podium-count-${topThree.length}`;
   podiumElement.innerHTML = podiumOrder;
 }
 

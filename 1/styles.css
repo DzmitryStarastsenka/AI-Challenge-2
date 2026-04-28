@@ -106,6 +106,7 @@ select {
 .filters-row {
   gap: 16px;
   flex-wrap: nowrap;
+  align-items: center;
 }
 
 .select-shell {
@@ -144,7 +145,7 @@ select {
 }
 
 .search-shell {
-  margin-top: 14px;
+  margin-top: 0;
   height: 32px;
   display: flex;
   align-items: center;
@@ -152,7 +153,8 @@ select {
   padding: 0 10px;
   border: 1px solid #2f2f2f;
   color: #616161;
-  width: 100%;
+  flex: 1;
+  min-width: 320px;
 }
 
 .search-shell input {
@@ -170,6 +172,18 @@ select {
   gap: 24px;
   margin: 22px auto 30px;
   max-width: 920px;
+}
+
+.podium.podium-count-1 {
+  grid-template-columns: minmax(260px, 360px);
+  justify-content: center;
+  max-width: 360px;
+}
+
+.podium.podium-count-2 {
+  grid-template-columns: repeat(2, minmax(260px, 1fr));
+  justify-content: center;
+  max-width: 700px;
 }
 
 .podium-card {
@@ -683,6 +697,11 @@ select {
 
   .select-shell-wide {
     width: 100%;
+  }
+
+  .search-shell {
+    width: 100%;
+    min-width: 0;
   }
 
   .page-title {
