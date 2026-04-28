@@ -78,7 +78,7 @@ function render() {
     [...appState.expandedEmployeeIds].filter((employeeId) => visibleIds.has(employeeId)),
   );
 
-  renderPodium(employeesForFilters.slice(0, 3));
+  renderPodium(rankedEmployees.slice(0, 3));
   renderRankingList(rankedEmployees);
 
   emptyStateElement.hidden = rankedEmployees.length > 0;
@@ -166,7 +166,7 @@ function renderRankingList(rankedEmployees) {
       const statBadges = Object.entries(employee.categoryCounts)
         .map(
           ([category, count]) => `
-            <span class="stat-chip" title="${escapeHtml(category)}" aria-label="${escapeHtml(category)}: ${count}">
+            <span class="stat-chip" data-tooltip="${escapeHtml(category)}" aria-label="${escapeHtml(category)}: ${count}">
               ${renderIcon(category)}
               ${count}
             </span>

@@ -467,6 +467,7 @@ select {
 }
 
 .stat-chip {
+  position: relative;
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -475,6 +476,53 @@ select {
   background: transparent;
   color: #4b5563;
   font-weight: 600;
+}
+
+.stat-chip::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 8px);
+  transform: translateX(-50%) translateY(4px);
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: #111827;
+  color: #fff;
+  font-size: 12px;
+  line-height: 1;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 80ms ease, transform 80ms ease;
+  z-index: 10;
+}
+
+.stat-chip::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 2px);
+  width: 8px;
+  height: 8px;
+  background: #111827;
+  transform: translateX(-50%) rotate(45deg) translateY(4px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 80ms ease, transform 80ms ease;
+  z-index: 9;
+}
+
+.stat-chip:hover::after,
+.stat-chip:hover::before,
+.stat-chip:focus-visible::after,
+.stat-chip:focus-visible::before {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.stat-chip:hover::before,
+.stat-chip:focus-visible::before {
+  transform: translateX(-50%) rotate(45deg) translateY(0);
 }
 
 .stat-chip + .stat-chip {
